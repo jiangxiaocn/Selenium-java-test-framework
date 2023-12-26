@@ -19,7 +19,7 @@ public class AddToCartTest extends BaseTest {
         CartPage cartPage = new StorePage(getDriver()).load().
                 getProductThumbnail().
                 clickAddToCartBtn(product.getName()).clickViewCart();
-        Assert.assertEquals(cartPage.getProductName(), product.getName()+"fsdf");
+        Assert.assertEquals(cartPage.getProductName(), product.getName());
 
     }
     @Test(dataProvider = "getFeaturedProducts", dataProviderClass = MyDataProvider.class)
