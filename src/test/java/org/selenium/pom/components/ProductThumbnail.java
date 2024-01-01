@@ -3,8 +3,10 @@ package org.selenium.pom.components;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.selenium.pom.Pages.ProductPage;
 import org.selenium.pom.base.BasePage;
 import org.selenium.pom.Pages.CartPage;
+import org.selenium.pom.objects.Product;
 
 public class ProductThumbnail extends BasePage {
     private final By viewCartLink = By.cssSelector("a[title='View cart']");

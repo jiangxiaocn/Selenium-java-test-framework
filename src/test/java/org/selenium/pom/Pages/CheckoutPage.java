@@ -2,9 +2,15 @@ package org.selenium.pom.Pages;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.selenium.pom.api.actions.CartApi;
+import org.selenium.pom.api.actions.SignUpApi;
 import org.selenium.pom.base.BasePage;
 import org.selenium.pom.objects.BillingAddress;
 import org.selenium.pom.objects.User;
+import org.selenium.pom.utils.FakerUtils;
+import org.selenium.pom.utils.JacksonUtils;
+
+import java.io.IOException;
 
 public class CheckoutPage extends BasePage {
     private final By firstnameFld = By.id("billing_first_name");
@@ -29,6 +35,8 @@ public class CheckoutPage extends BasePage {
     private final By alternateStateDropDown = By.id("select2-billing_state-container");
 
     private final By directBankTransferRadioBtn = By.id("payment_method_bacs");
+
+    private final By CashOnDeliveryRadioBtn = By.id("payment_method_cod");
 
     private final By productName = By.cssSelector("td[class='product-name']");
 
@@ -164,6 +172,13 @@ public class CheckoutPage extends BasePage {
         }
         return this;
     }
+    public CheckoutPage selectCashOnDelivery(){
+        WebElement e = wait.until(ExpectedConditions.elementToBeClickable(CashOnDeliveryRadioBtn));
+        if(!e.isSelected()){
+            e.click();
+        }
+        return this;
+    }
 
     public String getProductName() throws Exception {
         int i = 5;
@@ -177,5 +192,25 @@ public class CheckoutPage extends BasePage {
             i--;
         }
         throw new Exception("Element not found");
+    }
+
+    public static BillingAddress getBillingAddress() throws IOException {
+        return JacksonUtils.deserializeJson("myBillingAddress.json", BillingAddress.class);
+    }
+    public static User createUser() {
+        String username = "demouser" + new FakerUtils().generateRandomNumber();
+        return new User()
+                .setUsername(username)
+                .setPassword("demopwd")
+                .setEmail(username + "@askomdch.com");
+    }
+    public static SignUpApi registerUserAndGetApi(User user) {
+        SignUpApi signUpApi = new SignUpApi();
+        signUpApi.register(user);
+        return signUpApi;
+    }
+
+    public static CartApi getCartApiWithRegisteredUser(SignUpApi signUpApi) {
+        return new CartApi(signUpApi.getCookies());
     }
 }

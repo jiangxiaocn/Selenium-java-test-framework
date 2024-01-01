@@ -10,6 +10,26 @@ public class BillingAddress {
     private String country;
     private String state;
 
+    private String company;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    private String phone;
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
     public String getCountry() {
         return country;
     }
@@ -82,12 +102,14 @@ public class BillingAddress {
     public BillingAddress(){}
 
     public BillingAddress(String firstName, String lastName, String addressLineOne, String city,
-                          String postalCode, String email){
+                          String postalCode, String email,String company,String phone){
         this.firstName = firstName;
         this.lastName = lastName;
         this.addressLineOne = addressLineOne;
         this.city = city;
         this.postalCode = postalCode;
         this.email = email;
+        this.company = company;
+        this.phone = phone;
     }
 }
