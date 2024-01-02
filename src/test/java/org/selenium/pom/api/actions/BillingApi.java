@@ -10,13 +10,8 @@ import org.jsoup.nodes.Element;
 import org.selenium.pom.constants.Codes;
 import org.selenium.pom.constants.EndPoint;
 import org.selenium.pom.objects.BillingAddress;
-import org.selenium.pom.utils.ApiRequestUtil;
-import org.selenium.pom.utils.ConfigLoader;
 
-import java.net.URL;
 import java.util.HashMap;
-
-import static io.restassured.RestAssured.given;
 
 public class BillingApi{
     private Cookies cookies;
@@ -26,8 +21,7 @@ public class BillingApi{
     }
 
     private String fetchEditBillingAddressNonceValueUsingJsoup(){
-        Response response = ApiRequestUtil.sendRequest("GET",EndPoint.ACCOUNT_EDIT_BILLING_ADDRESS.url, cookies);
-        //Response response = getBillingAddress();
+        Response response = ApiRequest.get(EndPoint.ACCOUNT_EDIT_BILLING_ADDRESS.url, cookies);
         Document doc = Jsoup.parse(response.body().prettyPrint());
         Element element = doc.selectFirst("#woocommerce-edit-address-nonce");
         assert element != null;
@@ -52,15 +46,8 @@ public class BillingApi{
         formParams.put("action","edit_address");
         formParams.put("save_address","Save address");
         formParams.put("billing_email",billingAddress.getEmail());
-        /*
-        Response response = given().
-                baseUri(ConfigLoader.getInstance().getBaseUrl()).
-        headers(headers).
-                cookies(cookies).
-                formParams(formParams).
-                when().
-                post("/account/edit-address/billing/").then().extract().response();*/
-        Response response = ApiRequestUtil.sendRequest("POST",EndPoint.ACCOUNT_EDIT_BILLING_ADDRESS.url, cookies);
+        Response response = ApiRequest.post(
+                EndPoint.ACCOUNT_EDIT_BILLING_ADDRESS.url, headers, formParams, cookies);
         if(response.getStatusCode()!=302)
         {
             throw new RuntimeException("Failed to edit the address of the account -" +response.getStatusCode()+response.body().prettyPrint());

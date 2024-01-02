@@ -94,7 +94,6 @@ public class CheckoutTest extends BaseTest {
         BillingApi billingApi = new BillingApi(signUpApi.getCookies());
         billingApi.addBillingAddress(billingAddress);
 
-        Thread.sleep(5000);
         CartApi cartApi = new CartApi(signUpApi.getCookies());
         Product product = new Product(1215);
         cartApi.addToCart(product.getId(), 1);
@@ -104,7 +103,6 @@ public class CheckoutTest extends BaseTest {
         checkoutPage.load();
         checkoutPage.selectDirectBankTransfer().
                 placeOrder();
-        Thread.sleep(5000);
         Assert.assertEquals(checkoutPage.getNotice(), "Thank you. Your order has been received.");
     }
 }
